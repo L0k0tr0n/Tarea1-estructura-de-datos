@@ -99,7 +99,7 @@ int main() {
             save(img, "output_espejo.png");
             cout << "Efecto espejo aplicado correctamente." << endl;
         } 
-        else if (opcion == 2) {  // ✅ corregido aquí
+        else if (opcion == 2) {  
             float alpha;
             cout << "Ingrese valor de atenuación (entre 0.0 y 1.0): ";
             cin >> alpha;
