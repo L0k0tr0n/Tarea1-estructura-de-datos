@@ -26,25 +26,24 @@ void save(Imagen* img, const char* filename) {
 }
 
 // Operación 1: Efecto espejo horizontal
-void espejo(Imagen* img) {
-    int ancho = img->width;
-    int alto = img->height;
-    int canales = img->channels;
+void espejoHorizontal(Imagen* img) {
+    int width = img->width;
+    int height = img->height;
+    int channels = img->channels;
+    unsigned char* data = img->data;
 
-    for (int y = 0; y < alto; y++) {
-        for (int x = 0; x < ancho / 2; x++) {
-            int i1 = (y * ancho + x) * canales;
-            int i2 = (y * ancho + (ancho - 1 - x)) * canales;
+    for (int fila = 0; fila < height; fila++) {
+        for (int col = 0; col < width / 2; col++) {
+            int col_opuesta = width - col - 1;
 
-            for (int c = 0; c < canales; c++) {
-                unsigned char temp = img->data[i1 + c];
-                img->data[i1 + c] = img->data[i2 + c];
-                img->data[i2 + c] = temp;
+            int indice_izquierdo = (fila * width + col) * channels;
+            int indice_derecho = (fila * width + col_opuesta) * channels;
+
+            for (int ch = 0; ch < channels; ch++) {
+                std::swap(data[indice_izquierdo + ch], data[indice_derecho + ch]);
             }
         }
     }
-
-    cout << "Efecto espejo aplicado.\n";
 }
 
 // Operación 2: Atenuar imagen (solo R, G, B)
@@ -89,17 +88,18 @@ int main() {
 
         // Validar si la entrada fue un número
         if (cin.fail()) {
-            cin.clear(); // limpiar estado de error
-            cin.ignore(10000, '\n'); // limpiar entrada anterior
+            cin.clear();
+            cin.ignore(10000, '\n');
             cout << "Entrada inválida. Debe ingresar un número del 1 al 3." << endl;
             continue;
         }
 
         if (opcion == 1) {
-            espejo(img);
+            espejoHorizontal(img);
             save(img, "output_espejo.png");
+            cout << "Efecto espejo aplicado correctamente." << endl;
         } 
-        else if (opcion == 2) {
+        else if (opcion == 2) {  // ✅ corregido aquí
             float alpha;
             cout << "Ingrese valor de atenuación (entre 0.0 y 1.0): ";
             cin >> alpha;
@@ -107,7 +107,7 @@ int main() {
             if (cin.fail() || alpha < 0.0f || alpha > 1.0f) {
                 cin.clear();
                 cin.ignore(10000, '\n');
-                cout << "Valor inválido para atenuación. Debe estar entre 0.0 y 1.0.\n";
+                cout << "Valor incorrecto. Debe estar entre 0.0 y 1.0.\n";
                 continue;
             }
 
@@ -129,4 +129,3 @@ int main() {
 
     return 0;
 }
-
