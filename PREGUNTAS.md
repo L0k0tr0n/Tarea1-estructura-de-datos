@@ -39,12 +39,5 @@ Respuesta N°4: Segun "Solarian Programmer", para convertirar una imagen RGB a g
 multiplicando sus componentes R, G y B por 0.299, 0.587 y 0.114 respectivamente, la suma de estos valores hace que los pixels de la imagen se vean grises en su totalidad
 que se almacenaran en un nuevo array y de un solo canal. 
 
-La función en especifico:
-void rgb_to_grayscale(const unsigned char* rgb, unsigned char* gray, int width, int height) {
-    for (int i = 0; i < width * height; ++i) {
-        // Fórmula de luminancia BT.601
-        gray[i] = 0.299f * rgb[3*i] + 0.587f * rgb[3*i + 1] + 0.114f * rgb[3*i + 2];
-    }
-}
 
 Respuesta 6: Puede ser que el programa no está identificando bien, cuáles son los píxeles que deben mantenerse negros. de modo que se estén revisando mal los valores de color, como por ejemplo que no se esté preguntando si R, G y B son igual a 0 al mismo tiempo. Entonces, en vez de dejar solo los píxeles negros, termina dejando los blancos o los de color. También podría ser que el programa simplemente deja todo igual porque no hay una condición que cambie el valor cuando no es negro. Quizás habría que asegurarse de que si el píxel no es negro, se reemplace por blanco o por algún valor específico. 
